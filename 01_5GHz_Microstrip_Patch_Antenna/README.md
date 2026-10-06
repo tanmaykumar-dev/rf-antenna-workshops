@@ -1,7 +1,7 @@
 # 5 GHz Inset-Fed Microstrip Patch Antenna
 ### IEEE Techblocks RF and Antenna Simulation — Final Capstone Project
 
-**Author:** Tanmay Kumar (NJG2610272)  
+**Author:** Tanmay Kumar  
 **Tools:** Ansys HFSS (Electronics Desktop), Python  
 
 ---

@@ -2,7 +2,6 @@
 ### IEEE Techblocks RF and Antenna Simulation — Final Capstone Project
 
 [![Ansys HFSS](https://img.shields.io/badge/Simulation-Ansys%20HFSS%202018.2%2B-red.svg)](https://www.ansys.com/products/electronics/ansys-hfss)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Frequency: 5 GHz](https://img.shields.io/badge/Center%20Freq-5.0%20GHz-blue.svg)](#key-performance-metrics)
 [![Return Loss](https://img.shields.io/badge/S11--37.52%20dB-brightgreen.svg)](#s11-return-loss)
 [![VSWR](https://img.shields.io/badge/VSWR-1.03%20%3A%201-success.svg)](#vswr-voltage-standing-wave-ratio)
@@ -69,17 +68,15 @@ The antenna is constructed on a double-sided copper-clad **FR-4 Epoxy** printed 
 | `w_f` | Microstrip Feed Width | **$3.0590\text{ mm}$** | Wheeler formulation for $50\ \Omega$ microstrip line |
 | `y_0` | Inset Notch Feed Depth | **$4.6689\text{ mm}$** | Parametrically optimized for $R_{\text{in}}(y_0) = 50\ \Omega$ |
 | `g` | Inset Notch Slot Gap | **$0.5000\text{ mm}$** | Isolation gap between patch body and feed |
-| `w_s` | Substrate / Ground Width | **$27.8574\text{ mm}$** | $W_s = W_p + 6 h_s$ (minimizes edge diffraction) |
+| `w_s` | Substrate / Ground Width | **$27.8574\text{ mm}$** | $W_s = W_p + 6 h_s$ |
 | `l_s` | Substrate / Ground Length | **$23.2629\text{ mm}$** | $L_s = L_p + 6 h_s$ |
 
 ### Material Parameters
 * **Substrate Material:** `FR4_epoxy`
   * Relative Permittivity ($\varepsilon_r$): $4.4$
   * Dielectric Loss Tangent ($\tan\delta$): $0.02$
-  * Mass Density: $1900\text{ kg/m}^3$
 * **Conductor Material:** `copper`
   * Bulk Conductivity ($\sigma$): $5.8 \times 10^7\text{ S/m}$
-  * Permeability ($\mu_r$): $0.999991$
 
 ---
 
@@ -139,27 +136,32 @@ Close-up perspective of the inset feed notches and microstrip transmission line.
 
 ---
 
-## Mathematical Formulation & Theory
+## Design Formulas & Values
 
 ### 1. Radiating Patch Width ($W_p$)
-$$W_p = \frac{c}{2 f_0} \sqrt{\frac{2}{\varepsilon_r + 1}} = \frac{3 \times 10^8}{2(5 \times 10^9)} \sqrt{\frac{2}{4.4 + 1}} = 18.2574\text{ mm}$$
+$$W_p = \frac{c}{2 f_0} \sqrt{\frac{2}{\varepsilon_r + 1}} = 18.2574\text{ mm}$$
 
 ### 2. Effective Permittivity ($\varepsilon_{\text{eff}}$)
-Accounting for fringing fields into air:
-$$\varepsilon_{\text{eff}} = \frac{\varepsilon_r + 1}{2} + \frac{\varepsilon_r - 1}{2} \left[ 1 + 12 \left(\frac{h_s}{W_p}\right) \right]^{-1/2} \approx 3.8868$$
+$$\varepsilon_{\text{eff}} = \frac{\varepsilon_r + 1}{2} + \frac{\varepsilon_r - 1}{2} \left[ 1 + 12 \left(\frac{h_s}{W_p}\right) \right]^{-1/2} = 3.8868$$
 
-### 3. Length Extension ($\Delta L$) & Resonant Length ($L_p$)
-$$\Delta L = 0.412 h_s \frac{(\varepsilon_{\text{eff}} + 0.3) \left(\frac{W_p}{h_s} + 0.264\right)}{(\varepsilon_{\text{eff}} - 0.258) \left(\frac{W_p}{h_s} + 0.8\right)} \approx 0.748\text{ mm}$$
+### 3. Fringing Length Extension ($\Delta L$)
+$$\Delta L = 0.412 h_s \frac{(\varepsilon_{\text{eff}} + 0.3) \left(\frac{W_p}{h_s} + 0.264\right)}{(\varepsilon_{\text{eff}} - 0.258) \left(\frac{W_p}{h_s} + 0.8\right)} = 0.7480\text{ mm}$$
 
-$$L_{\text{eff}} = \frac{c}{2 f_0 \sqrt{\varepsilon_{\text{eff}}}} \approx 15.2168\text{ mm}$$
+### 4. Effective Resonant Length ($L_{\text{eff}}$)
+$$L_{\text{eff}} = \frac{c}{2 f_0 \sqrt{\varepsilon_{\text{eff}}}} = 15.2168\text{ mm}$$
 
-$$L_p = L_{\text{eff}} - 2 \Delta L \approx 13.6629\text{ mm}$$
+### 5. Physical Patch Length ($L_p$)
+$$L_p = L_{\text{eff}} - 2 \Delta L = 13.6629\text{ mm}$$
 
-### 4. Inset Matching Theory
-Edge input resistance for a patch without inset is typically $200 - 400\ \Omega$:
-$$R_{\text{in}}(y_0) = R_{\text{in}}(0) \cos^2\left(\frac{\pi y_0}{L_p}\right) = 50\ \Omega$$
+### 6. $50\ \Omega$ Microstrip Feedline Width ($W_f$)
+$$W_f = 3.0590\text{ mm}$$
 
-Ansys Optimetrics parametric sweep between $3.5\text{ mm} \le y_0 \le 6.0\text{ mm}$ located the optimal matching point at $y_0 = 4.6689\text{ mm}$.
+### 7. Inset Notch Depth ($y_0$) for $50\ \Omega$ Matching
+$$R_{\text{in}}(y_0) = R_{\text{in}}(0) \cos^2\left(\frac{\pi y_0}{L_p}\right) = 50\ \Omega \implies y_0 = 4.6689\text{ mm}$$
+
+### 8. Substrate & Ground Dimensions ($W_s, L_s$)
+$$W_s = W_p + 6 h_s = 27.8574\text{ mm}$$
+$$L_s = L_p + 6 h_s = 23.2629\text{ mm}$$
 
 ---
 
@@ -172,10 +174,9 @@ IEEE-Techblocks-RF-Antenna-Simulation/
 │       └── python-validation.yml    # CI workflow running automated checks
 ├── .gitignore                        # Git ignore rules for Ansys HFSS artifacts
 ├── CITATION.cff                      # Academic / project citation metadata
-├── LICENSE                           # MIT Open Source License
 ├── README.md                         # Project documentation and results showcase
 ├── docs/
-│   ├── antenna_design_theory.md      # Detailed electromagnetic mathematical derivation
+│   ├── antenna_design_theory.md      # Antenna formulas and summary
 │   └── simulation_guide.md           # Reproduction and setup guide in HFSS
 ├── models/
 │   └── 5ghz_inset_patch.aedt         # Primary Ansys HFSS project file
@@ -199,7 +200,7 @@ IEEE-Techblocks-RF-Antenna-Simulation/
 ## How to Run & Reproduce
 
 ### 1. Analytical Equation Verification (Python)
-Run the analytical calculator to compute theoretical dimensions and compare against simulated metrics:
+Run the analytical calculator:
 
 ```bash
 python scripts/patch_antenna_calculator.py
@@ -233,11 +234,3 @@ python scripts/hfss_build_patch.py
 * **Student / ID:** NJG2610272
 * **Workshop:** IEEE Techblocks RF and Antenna Simulation Workshop
 * **Institution / Organization:** IEEE Student Branch
-
-Special thanks to the IEEE Techblocks mentors and instructors for guidance throughout the RF simulation modules.
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).

@@ -1,7 +1,7 @@
 # RF & Antenna Simulation Workshops
 ### IEEE Techblocks — Antenna Design & Simulation Projects
 
-**Author:** Tanmay Kumar (NJG2610272)  
+**Author:** Tanmay Kumar  
 **Tools:** Ansys HFSS (Electronics Desktop), Python  
 
 This repository contains my antenna design and electromagnetic simulation projects from the **IEEE Techblocks RF and Antenna Simulation Workshop**.
